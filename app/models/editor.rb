@@ -1,0 +1,3 @@
+class Editor < ApplicationRecord
+
+end
