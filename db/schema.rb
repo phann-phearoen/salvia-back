@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_06_041517) do
+ActiveRecord::Schema.define(version: 2021_11_08_020914) do
 
   create_table "ads", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "position", limit: 191, null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2021_11_06_041517) do
     t.integer "editor_user_id", null: false
     t.integer "review_user_id"
     t.integer "parent_article_id"
-    t.string "type", limit: 191, null: false
+    t.string "article_type", limit: 191, null: false
     t.string "title", limit: 191
     t.string "eyecatch_image_file_url", limit: 191
     t.string "thumbnail_image_file_url", limit: 191
@@ -46,13 +46,13 @@ ActiveRecord::Schema.define(version: 2021_11_06_041517) do
     t.timestamp "creation_date"
     t.timestamp "last_update"
     t.timestamp "deleted_at"
+    t.index ["article_type"], name: "index_type"
     t.index ["editor_user_id"], name: "index_editor_user_id"
     t.index ["fixed"], name: "index_fixed"
     t.index ["parent_article_id"], name: "index_parent_article_id"
     t.index ["review_user_id"], name: "index_review_user_id"
     t.index ["root"], name: "index_root"
     t.index ["status"], name: "index_status"
-    t.index ["type"], name: "index_type"
   end
 
   create_table "categories", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
