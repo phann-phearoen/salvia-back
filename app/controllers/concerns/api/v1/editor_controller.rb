@@ -1,4 +1,5 @@
 class Api::V1::EditorController < ApplicationController
+    skip_before_action :authenticate_editor!, only: [:index, :create]
     def index
         @editors = Editor.all 
         render json: @editors
