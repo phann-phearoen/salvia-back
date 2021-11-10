@@ -86,6 +86,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    doorkeeper (5.5.4)
+      railties (>= 5)
     erubi (1.10.0)
     ffi (1.15.4)
     globalid (0.5.2)
@@ -221,6 +223,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise
+  doorkeeper
   jbuilder (~> 2.7)
   mysql2 (~> 0.5)
   puma (~> 5.0)
