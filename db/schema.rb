@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_04_094009) do
+ActiveRecord::Schema.define(version: 2021_11_10_102314) do
 
   create_table "ads", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "position", limit: 191, null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2021_11_04_094009) do
     t.integer "editor_user_id", null: false
     t.integer "review_user_id"
     t.integer "parent_article_id"
-    t.string "type", limit: 191, null: false
+    t.string "article_type", limit: 191, null: false
     t.string "title", limit: 191
     t.string "eyecatch_image_file_url", limit: 191
     t.string "thumbnail_image_file_url", limit: 191
@@ -46,13 +46,13 @@ ActiveRecord::Schema.define(version: 2021_11_04_094009) do
     t.timestamp "creation_date"
     t.timestamp "last_update"
     t.timestamp "deleted_at"
+    t.index ["article_type"], name: "index_type"
     t.index ["editor_user_id"], name: "index_editor_user_id"
     t.index ["fixed"], name: "index_fixed"
     t.index ["parent_article_id"], name: "index_parent_article_id"
     t.index ["review_user_id"], name: "index_review_user_id"
     t.index ["root"], name: "index_root"
     t.index ["status"], name: "index_status"
-    t.index ["type"], name: "index_type"
   end
 
   create_table "categories", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -82,13 +82,18 @@ ActiveRecord::Schema.define(version: 2021_11_04_094009) do
     t.string "icon_image_file_url", limit: 191
     t.text "profile"
     t.string "email", limit: 191, null: false
-    t.string "password", limit: 191, null: false
+    t.string "encrypted_password", limit: 191, null: false
     t.integer "role", limit: 1, default: 0, null: false
     t.string "remember_token", limit: 100
     t.timestamp "creation_date"
     t.timestamp "last_update"
     t.timestamp "deleted_at"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.index ["email"], name: "editors_email_unique", unique: true
+    t.index ["email"], name: "index_editors_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_editors_on_reset_password_token", unique: true
     t.index ["role"], name: "index_role"
   end
 
@@ -124,57 +129,46 @@ ActiveRecord::Schema.define(version: 2021_11_04_094009) do
     t.integer "batch", null: false
   end
 
-  create_table "oauth_access_token_providers", primary_key: "oauth_access_token_id", id: { type: :string, limit: 100 }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "provider", limit: 191, null: false
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+  create_table "oauth_access_grants", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "resource_owner_id", null: false
+    t.bigint "application_id", null: false
+    t.string "token", null: false
+    t.integer "expires_in", null: false
+    t.text "redirect_uri", null: false
+    t.datetime "created_at", null: false
+    t.datetime "revoked_at"
+    t.string "scopes", default: "", null: false
+    t.index ["application_id"], name: "index_oauth_access_grants_on_application_id"
+    t.index ["resource_owner_id"], name: "index_oauth_access_grants_on_resource_owner_id"
+    t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
   end
 
-  create_table "oauth_access_tokens", id: { type: :string, limit: 100 }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "client_id", null: false, unsigned: true
-    t.string "name", limit: 191
-    t.text "scopes"
-    t.boolean "revoked", null: false
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.datetime "expires_at"
-    t.index ["user_id"], name: "oauth_access_tokens_user_id_index"
+  create_table "oauth_access_tokens", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "resource_owner_id"
+    t.bigint "application_id", null: false
+    t.string "token", null: false
+    t.string "refresh_token"
+    t.integer "expires_in"
+    t.datetime "revoked_at"
+    t.datetime "created_at", null: false
+    t.string "scopes"
+    t.string "previous_refresh_token", default: "", null: false
+    t.index ["application_id"], name: "index_oauth_access_tokens_on_application_id"
+    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
+    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
+    t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
   end
 
-  create_table "oauth_auth_codes", id: { type: :string, limit: 100 }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "client_id", null: false, unsigned: true
-    t.text "scopes"
-    t.boolean "revoked", null: false
-    t.datetime "expires_at"
-  end
-
-  create_table "oauth_clients", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "user_id"
-    t.string "name", limit: 191, null: false
-    t.string "secret", limit: 100, null: false
-    t.text "redirect", null: false
-    t.boolean "personal_access_client", null: false
-    t.boolean "password_client", null: false
-    t.boolean "revoked", null: false
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.index ["user_id"], name: "oauth_clients_user_id_index"
-  end
-
-  create_table "oauth_personal_access_clients", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "client_id", null: false, unsigned: true
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.index ["client_id"], name: "oauth_personal_access_clients_client_id_index"
-  end
-
-  create_table "oauth_refresh_tokens", id: { type: :string, limit: 100 }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "access_token_id", limit: 100, null: false
-    t.boolean "revoked", null: false
-    t.datetime "expires_at"
-    t.index ["access_token_id"], name: "oauth_refresh_tokens_access_token_id_index"
+  create_table "oauth_applications", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "uid", null: false
+    t.string "secret", null: false
+    t.text "redirect_uri"
+    t.string "scopes", default: "", null: false
+    t.boolean "confidential", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
   create_table "password_resets", id: false, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -302,5 +296,6 @@ ActiveRecord::Schema.define(version: 2021_11_04_094009) do
     t.index ["type"], name: "index_type"
   end
 
-  add_foreign_key "oauth_access_token_providers", "oauth_access_tokens", name: "oauth_access_token_providers_oauth_access_token_id_foreign", on_delete: :cascade
+  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
 end
