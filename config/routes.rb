@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # resources :ad
       # resources :user
+      resources :articles
       resources :editor
       root 'editor#index'
     end
