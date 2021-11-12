@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_10_102314) do
+ActiveRecord::Schema.define(version: 2021_11_12_041534) do
 
   create_table "ads", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "position", limit: 191, null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2021_11_10_102314) do
   end
 
   create_table "articles", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "editor_user_id", null: false
+    t.integer "editor_id", null: false
     t.integer "review_user_id"
     t.integer "parent_article_id"
     t.string "article_type", limit: 191, null: false
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 2021_11_10_102314) do
     t.timestamp "last_update"
     t.timestamp "deleted_at"
     t.index ["article_type"], name: "index_type"
-    t.index ["editor_user_id"], name: "index_editor_user_id"
+    t.index ["editor_id"], name: "index_editor_user_id"
     t.index ["fixed"], name: "index_fixed"
     t.index ["parent_article_id"], name: "index_parent_article_id"
     t.index ["review_user_id"], name: "index_review_user_id"
@@ -91,6 +91,10 @@ ActiveRecord::Schema.define(version: 2021_11_10_102314) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.index ["confirmation_token"], name: "index_editors_on_confirmation_token", unique: true
     t.index ["email"], name: "editors_email_unique", unique: true
     t.index ["email"], name: "index_editors_on_email", unique: true
     t.index ["reset_password_token"], name: "index_editors_on_reset_password_token", unique: true
