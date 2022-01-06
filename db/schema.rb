@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_15_060335) do
+ActiveRecord::Schema.define(version: 2022_01_06_084251) do
 
   create_table "ads", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "position", limit: 191, null: false
@@ -65,11 +65,11 @@ ActiveRecord::Schema.define(version: 2021_11_15_060335) do
     t.timestamp "creation_date"
     t.timestamp "last_update"
     t.timestamp "deleted_at"
-    t.string "type", limit: 191, default: "article"
+    t.string "category_type", limit: 191, default: "article"
+    t.index ["category_type"], name: "index_type"
     t.index ["host_user_id"], name: "index_host_user_id"
     t.index ["parent_category_id"], name: "index_parent_category_id"
     t.index ["slug"], name: "index_slug"
-    t.index ["type"], name: "index_type"
   end
 
   create_table "database_structures", charset: "utf8mb4", force: :cascade do |t|

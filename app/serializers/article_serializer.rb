@@ -1,7 +1,6 @@
 class ArticleSerializer
   include JSONAPI::Serializer
-  has_many :categories
-
+  
   attributes :article_type, 
             :editor, 
             :title, 
@@ -12,8 +11,7 @@ class ArticleSerializer
             :lead_text, 
             :main_text, 
             :finish_text, 
+            :categories_id,
             :status, 
-            :publish_date,
-            :display_name,
-            :slug
+            :publish_date
 end
