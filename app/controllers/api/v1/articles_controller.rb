@@ -20,6 +20,16 @@ class Api::V1::ArticlesController < ApplicationController
                 editor = Editor.get_editor_by_id(article.editor_id)
                 obj["editor"] = editor
             end
+
+            if article.tag_ids?
+                tags = []
+                article.tag_ids.each do |this_tag|
+                    tag = Tag.get_tag_by_id(this_tag)
+                    tags.push(tag)
+                end
+                obj["tags"] = tags
+            end
+
             obj["contents"] = article
 
             response.push(obj)
