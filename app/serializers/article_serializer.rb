@@ -1,8 +1,7 @@
 class ArticleSerializer
   include JSONAPI::Serializer
   
-  attributes :article_type, 
-            :editor, 
+  attributes 
             :title, 
             :eyecatch_image_file_url, 
             :thumbnail_image_file_url, 
@@ -11,6 +10,5 @@ class ArticleSerializer
             :lead_text, 
             :main_text, 
             :finish_text,
-            :publish_date,
-            :category_id
+            :publish_date
 end
