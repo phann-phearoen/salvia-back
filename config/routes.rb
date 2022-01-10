@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       # resources :ad
       # resources :user
       resources :articles
+      resources :category
       resources :editor
       root 'editor#index'
     end

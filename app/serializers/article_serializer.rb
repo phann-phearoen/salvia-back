@@ -10,8 +10,7 @@ class ArticleSerializer
             :keywords,
             :lead_text, 
             :main_text, 
-            :finish_text, 
-            :categories_id,
-            :status, 
-            :publish_date
+            :finish_text,
+            :publish_date,
+            :category_id
 end
