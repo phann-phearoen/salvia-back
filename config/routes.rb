@@ -8,7 +8,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       # resources :ad
       # resources :user
-      resources :articles
+      # resources :articles
+      get '/articles/posts_index', to: 'articles#admin_index'
+      
       resources :category
       resources :editor
       root 'editor#index'

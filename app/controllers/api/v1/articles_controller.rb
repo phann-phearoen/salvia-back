@@ -1,36 +1,56 @@
 class Api::V1::ArticlesController < ApplicationController
     skip_before_action :doorkeeper_authorize!, except: %i[new]
 
-    def index 
-        articles = Article.order(:creation_date).page(page|| 1).per(10) 
+    def admin_index
+        articles = Article.order(:creation_date).page(page || 1).per(10) 
         
         response = []
         articles.each do |article|
             obj = {}
-            if article.category_id?
-                categories = []
-                article.category_id.each do |cat|
-                    category = Category.get_category_by_id(cat)              
-                    categories.push(category)
+            if article.tag_ids?
+                @tags = []
+                article.tag_ids.each do |t|
+                    tag = Tag.get_tag_by_id(t)
+                    if tag.present?
+                        @tags.push(tag.display_name)
+                    else
+                        nil
+                    end
                 end
-                obj["categories"] = categories
+                obj["tags"] = @tags
+            else
+                nil
+            end
+
+            if article.category_ids?
+                @categories = []
+                article.category_ids.each do |cat|
+                    category = Category.get_category_by_id(cat)
+                    if category.present?
+                        @categories.push(category.display_name)
+                    else
+                        nil
+                    end
+                end
+                obj["categories"] = @categories
+            else
+                nil
             end
             
             if article.editor_id?
                 editor = Editor.get_editor_by_id(article.editor_id)
-                obj["editor"] = editor
-            end
-
-            if article.tag_ids?
-                tags = []
-                article.tag_ids.each do |this_tag|
-                    tag = Tag.get_tag_by_id(this_tag)
-                    tags.push(tag)
+                if editor.present?
+                    obj["writer"] = editor.name 
+                else
+                    obj["writer"] = "Unknown"
                 end
-                obj["tags"] = tags
+            else
+                nil
             end
 
-            obj["contents"] = article
+            obj["title"] = article.title 
+
+            obj["created_at"] = article.creation_date
 
             response.push(obj)
         end

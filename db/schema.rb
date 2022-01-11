@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_10_025517) do
+ActiveRecord::Schema.define(version: 2022_01_11_042347) do
 
   create_table "ads", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "position", limit: 191, null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_025517) do
     t.text "lead_text", size: :long
     t.text "main_text", size: :long
     t.text "finish_text", size: :long
-    t.json "category_id", null: false
+    t.json "category_ids", null: false
     t.json "tag_ids", null: false
     t.string "status", limit: 191, default: "draft"
     t.datetime "publish_date"
