@@ -15,6 +15,8 @@ Rails.application.routes.draw do
       get '/category', to: 'category#index'
       get '/category/one_category', to: 'category#one_category'
 
+      get '/tag', to: 'tag#index'
+
       resources :editor
       root 'editor#index'
     end
