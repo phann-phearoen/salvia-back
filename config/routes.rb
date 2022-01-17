@@ -11,7 +11,10 @@ Rails.application.routes.draw do
       # resources :articles
       get '/articles/posts_index', to: 'articles#admin_index'
       
-      resources :category
+      # resources :category
+      get '/category', to: 'category#index'
+      get '/category/one_category', to: 'category#one_category'
+
       resources :editor
       root 'editor#index'
     end

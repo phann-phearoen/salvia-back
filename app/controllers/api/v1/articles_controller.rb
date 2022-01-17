@@ -5,8 +5,12 @@ class Api::V1::ArticlesController < ApplicationController
         articles = Article.order(:creation_date).page(page || 1).per(10) 
         
         response = []
+
         articles.each do |article|
             obj = {}
+
+            obj["id"] = article.id
+
             if article.tag_ids?
                 @tags = []
                 article.tag_ids.each do |t|
@@ -54,7 +58,7 @@ class Api::V1::ArticlesController < ApplicationController
 
             response.push(obj)
         end
-
+        
         render json: response
     end
 
