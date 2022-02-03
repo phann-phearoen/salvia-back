@@ -6,6 +6,11 @@ class Api::V1::CategoryController < ApplicationController
 
         render json: categories
     end
+
+    def search_category
+        categories = Category.where("display_name like ?", params[:title])
+        render json: categories
+    end
     
     def one_category        
         category = Category.where(id: params[:category_id])
