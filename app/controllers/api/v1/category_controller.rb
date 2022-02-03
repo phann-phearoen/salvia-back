@@ -2,22 +2,9 @@ class Api::V1::CategoryController < ApplicationController
     skip_before_action :doorkeeper_authorize!, except: %i[new]
 
     def index
-        categories = Category.order(:creation_date).page(page || 1).per(10)
+        categories = Category.all
 
-        response = []
-
-        categories.each do |cat|
-            obj = {}
-            obj["title"] = cat.display_name
-            obj["des"] = cat.detail
-            obj["slug"] = cat.slug 
-            obj["count"] = ''
-            obj["id"] = cat.id 
-
-            response.push(obj)
-        end
-
-        render json: response
+        render json: categories
     end
     
     def one_category        
