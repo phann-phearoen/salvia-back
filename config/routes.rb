@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       #resources :article
       get '/article/posts_index', to: 'article#admin_index'
+      get '/article/search_article', to: 'article#search_article'
       
       # resources :category
       get '/category', to: 'category#index'
