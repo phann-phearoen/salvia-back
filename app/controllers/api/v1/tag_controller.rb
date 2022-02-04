@@ -7,7 +7,8 @@ class Api::V1::TagController < ApplicationController
     end
 
     def search_tag
-        tags = Tag.where("display_name like ?", params[:name])
+        @name = params[:name]
+        tags = Tag.where("display_name like ? ", "%#{@name}%")
         render json: tags, only: [:display_name, :detail, :slug, :id]
     end
 
