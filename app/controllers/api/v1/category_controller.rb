@@ -8,7 +8,8 @@ class Api::V1::CategoryController < ApplicationController
     end
 
     def search_category
-        categories = Category.where("display_name like ?", params[:name])
+        @name = params[:name]
+        categories = Category.where("display_name like ? ", "%#{@name}%")
         render json: categories, only: [:display_name, :detail, :slug, :id]
     end
     
