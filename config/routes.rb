@@ -13,7 +13,6 @@ Rails.application.routes.draw do
       
       # resources :category
       get '/category', to: 'category#index'
-      get '/category/one_category', to: 'category#one_category'
       get '/category/search_category', to: 'category#search_category'
 
       get '/tag', to: 'tag#index'
