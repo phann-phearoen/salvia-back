@@ -6,6 +6,12 @@ class Api::V1::ArticleController < ApplicationController
         render json: tailor_response(articles)
     end
 
+    def search_article
+        @title = params[:title] 
+        articles = Article.where("title like ? ", "%#{@title}")        
+        render json: tailor_response(articles)
+    end
+    
     private
     def page
         Article.page(10).total_pages
