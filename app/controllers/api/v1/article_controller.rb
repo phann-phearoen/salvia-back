@@ -8,7 +8,7 @@ class Api::V1::ArticleController < ApplicationController
 
     def search_article
         @title = params[:title] 
-        articles = Article.where("title like ? ", "%#{@title}")        
+        articles = Article.where("title like ? ", "%#{@title}%")        
         render json: tailor_response(articles)
     end
     
