@@ -4,19 +4,14 @@ class Api::V1::CategoryController < ApplicationController
     def index
         categories = Category.all
 
-        render json: categories
+        render json: categories, only: [:display_name, :detail, :slug, :id]
     end
 
     def search_category
-        categories = Category.where("display_name like ?", params[:title])
-        render json: categories
+        categories = Category.where("display_name like ?", params[:name])
+        render json: categories, only: [:display_name, :detail, :slug, :id]
     end
     
-    def one_category        
-        category = Category.where(id: params[:category_id])
-        render json: category
-    end
-
     private
     def page
         Category.page(10).total_pages
