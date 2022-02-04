@@ -6,7 +6,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
-      get '/articles/posts_index', to: 'articles#admin_index'
+      #resources :article
+      get '/article/posts_index', to: 'article#admin_index'
       
       # resources :category
       get '/category', to: 'category#index'
