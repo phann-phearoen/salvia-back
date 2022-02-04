@@ -6,16 +6,15 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
-      # resources :ad
-      # resources :user
-      # resources :articles
       get '/articles/posts_index', to: 'articles#admin_index'
       
       # resources :category
       get '/category', to: 'category#index'
       get '/category/search_category', to: 'category#search_category'
 
+      #resources :tags
       get '/tag', to: 'tag#index'
+      get '/tag/search_tag', to: 'tag#search_tag'
 
       resources :editor
       root 'editor#index'
