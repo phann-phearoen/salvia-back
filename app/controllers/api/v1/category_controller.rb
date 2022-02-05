@@ -2,9 +2,18 @@ class Api::V1::CategoryController < ApplicationController
     skip_before_action :doorkeeper_authorize!, except: %i[new]
 
     def index
-        categories = Category.all
+        page = params[:page] || last_page
+        per = params[:per] || 10
+        categories = Category.order(:creation_date).page(page).per(per)
 
-        render json: categories, only: [:display_name, :detail, :slug, :id]
+        total_count = Category.count
+        total_pages = categories.total_pages
+        response = {
+            categories: categories,
+            total_count: total_count,
+            total_pages: total_pages 
+        }
+        render json: response
     end
 
     def search_category
@@ -14,7 +23,7 @@ class Api::V1::CategoryController < ApplicationController
     end
     
     private
-    def page
-        Category.page(10).total_pages
+    def last_page
+        Category.page(1).per(10).total_pages
     end
 end
