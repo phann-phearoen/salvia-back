@@ -18,7 +18,8 @@ class Api::V1::ArticleController < ApplicationController
         total_count = Article.count
         
         response = {
-            articles: articles.select(:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date),
+            # articles: articles.select(:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date),
+            articles: tailor_response(articles),
             total_count: total_count
         }
         
@@ -33,12 +34,10 @@ class Api::V1::ArticleController < ApplicationController
     
     private
     def get_page page_param
-        if page_param == 'last_page'
-            Article.page(1).per(10).total_pages
-        elsif page_param.to_i.is_a? Integer
+        if page_param
             page_param
         else
-            1
+            Article.page(1).per(10).total_pages
         end
     end
     def self.get_article_by_id article_id
@@ -55,13 +54,9 @@ class Api::V1::ArticleController < ApplicationController
                     tag = Tag.get_tag_by_id(t)
                     if tag.present?
                         @tags.push(tag.display_name)
-                    else
-                        nil
                     end
                 end
                 obj["tags"] = @tags
-            else
-                nil
             end
             if article.category_ids?
                 @categories = []
@@ -69,13 +64,9 @@ class Api::V1::ArticleController < ApplicationController
                     category = Category.get_category_by_id(cat)
                     if category.present?
                         @categories.push(category.display_name)
-                    else
-                        nil
                     end
                 end
                 obj["categories"] = @categories
-            else
-                nil
             end            
             if article.editor_id?
                 editor = Editor.get_editor_by_id(article.editor_id)
@@ -84,8 +75,6 @@ class Api::V1::ArticleController < ApplicationController
                 else
                     obj["writer"] = "Unknown"
                 end
-            else
-                nil
             end
             obj["title"] = article.title
             obj["created_at"] = article.creation_date
