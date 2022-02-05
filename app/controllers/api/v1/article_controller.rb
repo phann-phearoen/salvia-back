@@ -1,6 +1,11 @@
 class Api::V1::ArticleController < ApplicationController
     skip_before_action :doorkeeper_authorize!, except: %i[new]
 
+    def total_pages
+        total_count = Article.page(1).per(params[:per]).total_pages
+        render json: total_count
+    end
+
     def admin_index
         # articles = Article.order('creation_date DESC')
         # render json: articles, only: [:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date]
@@ -11,12 +16,10 @@ class Api::V1::ArticleController < ApplicationController
         articles = Article.order(:creation_date).page(page).per(per)
 
         total_count = Article.count
-        current_page = articles.current_page
         
         response = {
             articles: articles.select(:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date),
-            total_count: total_count,
-            current_page: current_page
+            total_count: total_count
         }
         
         render json: response
