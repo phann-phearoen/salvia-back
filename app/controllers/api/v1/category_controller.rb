@@ -7,11 +7,9 @@ class Api::V1::CategoryController < ApplicationController
         categories = Category.order(:creation_date).page(page).per(per)
 
         total_count = Category.count
-        total_pages = categories.total_pages
         response = {
             categories: categories,
             total_count: total_count,
-            total_pages: total_pages 
         }
         render json: response
     end
