@@ -2,8 +2,24 @@ class Api::V1::ArticleController < ApplicationController
     skip_before_action :doorkeeper_authorize!, except: %i[new]
 
     def admin_index
-        articles = Article.order(:creation_date).page(page || 1).per(10)
-        render json: tailor_response(articles)
+        # articles = Article.order('creation_date DESC')
+        # render json: articles, only: [:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date]
+
+        page = get_page(params[:page])
+        per = params[:per] || 10
+
+        articles = Article.order(:creation_date).page(page).per(per)
+
+        total_count = Article.count
+        current_page = articles.current_page
+        
+        response = {
+            articles: articles.select(:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date),
+            total_count: total_count,
+            current_page: current_page
+        }
+        
+        render json: response
     end
 
     def search_article
@@ -13,8 +29,14 @@ class Api::V1::ArticleController < ApplicationController
     end
     
     private
-    def page
-        Article.page(10).total_pages
+    def get_page page_param
+        if page_param == 'last_page'
+            Article.page(1).per(10).total_pages
+        elsif page_param.to_i.is_a? Integer
+            page_param
+        else
+            1
+        end
     end
     def self.get_article_by_id article_id
         self.where(id: article_id).last
