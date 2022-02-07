@@ -19,19 +19,22 @@ class Api::V1::ArticleController < ApplicationController
 
         total_count = Article.count
         
-        response = {
+        render json: response = {
             # articles: articles.select(:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date),
             articles: tailor_response(articles),
             total_count: total_count
         }
-        
-        render json: response
     end
 
     def search_article
         @title = params[:title] 
-        articles = Article.where("title like ? ", "%#{@title}%")        
-        render json: tailor_response(articles)
+        articles = Article.where("title like ? ", "%#{@title}%") 
+        total_count = articles.count 
+
+        render json: response = {
+            articles: tailor_response(articles),
+            total_count: total_count
+        }
     end
     
     private
