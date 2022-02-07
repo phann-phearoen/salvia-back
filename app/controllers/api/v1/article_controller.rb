@@ -10,10 +10,12 @@ class Api::V1::ArticleController < ApplicationController
         # articles = Article.order('creation_date DESC')
         # render json: articles, only: [:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date]
 
+        reverser = Article.order(creation_date: :desc)
+
         page = get_page(params[:page])
         per = params[:per] || 10
 
-        articles = Article.order(:creation_date).page(page).per(per)
+        articles = reverser.order(:creation_date).page(page).per(per)
 
         total_count = Article.count
         
