@@ -22,6 +22,11 @@ class Api::V1::TagController < ApplicationController
         render json: tags, only: [:display_name, :detail, :slug, :id]
     end
 
+    def view_tag 
+        tag = Tag.where(id: params[:id])
+        render json: tag
+    end
+
     private
     def last_page
         Tag.page(1).per(10).total_pages

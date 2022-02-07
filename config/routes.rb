@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       #resources :tags
       get '/tag', to: 'tag#index'
       get '/tag/search_tag', to: 'tag#search_tag'
+      get '/tag/view', to: 'tag#view_tag'
 
       resources :editor
       root 'editor#index'
