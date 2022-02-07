@@ -21,4 +21,9 @@ class Api::V1::CategoryController < ApplicationController
         categories = Category.where("display_name like ? ", "%#{@name}%")
         render json: categories, only: [:display_name, :detail, :slug, :id]
     end
+
+    def view_category
+        category = Category.where(id: params[:id])
+        render json: category
+    end
 end

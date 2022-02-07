@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       # resources :category
       get '/category', to: 'category#index'
       get '/category/search_category', to: 'category#search_category'
+      get '/category/view', to: 'category#view_category'
 
       #resources :tags
       get '/tag', to: 'tag#index'
