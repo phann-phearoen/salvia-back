@@ -2,9 +2,11 @@ class Api::V1::TagController < ApplicationController
     skip_before_action :doorkeeper_authorize!, except: %i[new]
 
     def index 
+        reverser = Tag.order(id: :desc)
+
         page = params[:page] || last_page
         per = params[:per] || 10
-        tags = Tag.order(:creation_date).page(page).per(per)
+        tags = reverser.page(page).per(per)
 
         total_count = Tag.count 
         response = {
