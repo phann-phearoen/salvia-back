@@ -36,6 +36,11 @@ class Api::V1::ArticleController < ApplicationController
             total_count: total_count
         }
     end
+
+    def view_article 
+        article = Article.where(id: params[:id])
+        render json: article
+    end
     
     private
     def self.get_article_by_id article_id
