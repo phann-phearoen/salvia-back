@@ -16,6 +16,11 @@ class Api::V1::CategoryController < ApplicationController
         render json: response
     end
 
+    def category_selector
+        categories = Category.limit(20).order('id desc')
+        render json: categories.select(:id, :display_name)
+    end
+
     def search_category
         @name = params[:name]
         categories = Category.where("display_name like ? ", "%#{@name}%")
