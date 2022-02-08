@@ -16,11 +16,13 @@ Rails.application.routes.draw do
       get '/category', to: 'category#index'
       get '/category/search_category', to: 'category#search_category'
       get '/category/view', to: 'category#view_category'
+      get '/category/select', to: 'category#category_selector'
 
       #resources :tags
       get '/tag', to: 'tag#index'
       get '/tag/search_tag', to: 'tag#search_tag'
       get '/tag/view', to: 'tag#view_tag'
+      get '/tag/select', to: 'tag#tag_selector'
 
       resources :editor
       root 'editor#index'

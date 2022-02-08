@@ -22,6 +22,11 @@ class Api::V1::TagController < ApplicationController
         render json: tags, only: [:display_name, :detail, :slug, :id]
     end
 
+    def tag_selector
+        tags = Tag.limit(20).order('id desc')
+        render json: tags.select(:id, :display_name)
+    end
+
     def view_tag 
         tag = Tag.where(id: params[:id])
         render json: tag
