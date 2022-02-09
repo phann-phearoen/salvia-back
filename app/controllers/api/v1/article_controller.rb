@@ -79,6 +79,7 @@ class Api::V1::ArticleController < ApplicationController
         end
         obj["title"] = article.title
         obj["created_at"] = article.creation_date
+        obj["lead_text"] = article.lead_text
         response.push(obj)
 
         render json: response
