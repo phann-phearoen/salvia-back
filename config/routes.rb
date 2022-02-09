@@ -7,10 +7,10 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
       #resources :article
-      get '/article/get_total_pages', to: 'article#total_pages'
       get '/article/posts_index', to: 'article#admin_index'
       get '/article/search_article', to: 'article#search_article'
       get '/article/view', to: 'article#view_article'
+      get '/article/get_by_id', to: 'article#get_article_by_id'
       
       # resources :category
       get '/category', to: 'category#index'
