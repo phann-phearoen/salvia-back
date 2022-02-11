@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get '/article/search_article', to: 'article#search_article'
       get '/article/view', to: 'article#view_article'
       get '/article/get_by_id', to: 'article#get_article_by_id'
+      delete '/article/delete', to: 'article#delete'
       
       # resources :category
       get '/category', to: 'category#index'

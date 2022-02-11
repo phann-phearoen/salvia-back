@@ -1,5 +1,5 @@
 class Api::V1::ArticleController < ApplicationController
-    skip_before_action :doorkeeper_authorize!, except: %i[new]
+    skip_before_action :doorkeeper_authorize!, except: [:new, :delete]
 
     def admin_index
         # articles = Article.order('creation_date DESC')
@@ -19,6 +19,10 @@ class Api::V1::ArticleController < ApplicationController
             articles: tailor_response(articles),
             total_count: total_count
         }
+    end
+
+    def delete
+        Article.find(params[:id]).destroy
     end
 
     def search_article
