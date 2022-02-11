@@ -4,9 +4,6 @@ class Api::V1::ArticleController < ApplicationController
     def admin_index
         # articles = Article.order('creation_date DESC')
         # render json: articles, only: [:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date]
-
-        reverser = Article.order(id: :desc)
-
         page = params[:page] || 1
         per = params[:per] || 10
 
@@ -18,6 +15,16 @@ class Api::V1::ArticleController < ApplicationController
             # articles: articles.select(:id, :title, :editor_id, :category_ids, :tag_ids, :creation_date),
             articles: tailor_response(articles),
             total_count: total_count
+        }
+    end
+
+    def feeds
+        page = params[:page] || 1
+        per = params[:per] || 40
+
+        articles = reverser.page(page).per(per)
+        render json: response = {
+            articles: articles.select(:id, :title, :eyecatch_image_file_url)
         }
     end
 
@@ -99,6 +106,9 @@ class Api::V1::ArticleController < ApplicationController
     end    
     
     private
+    def reverser
+        Article.order(id: :desc)
+    end
     def tailor_response articles
         response = []
         articles.each do |article|

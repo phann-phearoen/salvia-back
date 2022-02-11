@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get '/article/view', to: 'article#view_article'
       get '/article/get_by_id', to: 'article#get_article_by_id'
       get '/article/highlight', to: 'article#highlights'
+      get '/article/feeds', to: 'article#feeds'
       delete '/article/delete', to: 'article#delete'
       
       # resources :category
