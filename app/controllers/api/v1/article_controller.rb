@@ -25,6 +25,11 @@ class Api::V1::ArticleController < ApplicationController
         Article.find(params[:id]).destroy
     end
 
+    def highlights
+        articles = Article.limit(20).order('id desc')
+        render json: articles.select(:id, :title, :eyecatch_image_file_url)
+    end
+
     def search_article
         @title = params[:title] 
         articles = Article.where("title like ? ", "%#{@title}%") 
