@@ -22,7 +22,10 @@ class Api::V1::ArticleController < ApplicationController
     end
 
     def delete
-        Article.find(params[:id]).destroy
+        article = Article.find(params[:id]).destroy
+        if article.destroyed?
+            render json: "Article is deleted."
+        end
     end
 
     def highlights
